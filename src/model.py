@@ -3,10 +3,11 @@ import math
 
 import torch
 import torch.nn as nn
+from huggingface_hub import PyTorchModelHubMixin
 from torch.nn import functional as F
 
 
-class SelfAttention(nn.Module):
+class SelfAttention(nn.Module, PyTorchModelHubMixin):
     """
     Multi-head self-attention mechanism using PyTorch's optimized functional attention.
 
