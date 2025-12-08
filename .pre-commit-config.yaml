@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.1  # use latest tag you’re okay with
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+        types: [python]      # this ensures only .py files are touched
+      - id: ruff-format
+        types: [python]      # formatter only on .py files
+
+  # Optional: basic hygiene hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer
+        types: [python]
+      - id: trailing-whitespace
+        types: [python]
