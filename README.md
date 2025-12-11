@@ -1,1 +1,48 @@
 # zoof
+
+Zoof is a clean, and optimized implementation of a decoder-only Transformer language model in PyTorch. It follows the GPT architecture with modern enhancements for training stability and performance.
+
+## ⚡ Key Features
+
+- Pre-Norm Architecture: Applies `LayerNorm` before self-attention and MLP blocks (standard in GPT-2/3) for better gradient flow and training stability.
+- Flash Attention: Automatically uses PyTorch's `F.scaled_dot_product_attention`, leveraging Flash Attention kernels when available for efficient $O(N^2)$ computing.
+- Weight Tying: Shares weights between the token embedding layer and the final output logic head, reducing parameter count.
+- Smart Initialization: Implements a specific weight initialization strategy (scaling projections by $1/\sqrt{2L}$) to stabilize variance in deep residual paths.
+- Optimizer Groups: Custom parameter grouping for AdamW to apply weight decay only to 2D tensors (embeddings, matmuls), skipping biases and layer norms.
+- HuggingFace Integration: Inherits from PyTorchModelHubMixin for easy saving/pushing to the HF Hub.
+
+## 📂 Directory Structure
+
+```
+/
+├── src/
+│   ├── config.py    # Configuration dataclass
+│   ├── model.py     # Main GPT model, SelfAttention, and MLP classes
+│   └── utils.py     # Helper utilities
+├── .gitignore
+├── .pre-commit-config.yaml
+├── pyproject.toml
+└── uv.lock          # Dependency lock file
+```
+
+## 🛠️ Installation
+
+This project uses uv for fast package management.
+
+### Prerequisites
+
+- Python 3.8+
+- PyTorch (CUDA for Flash Attention)
+
+### Setup
+
+```
+git clone https://github.com/yourusername/zoof.git
+cd zoof
+
+# Syncs the environment based on uv.lock
+uv sync
+```
+
+## 🚀 Usage
+
