@@ -71,4 +71,9 @@ This script will:
 
 - Download the config and model weights from `Jiraya/zoof-250M-chat`.
 - Download the tokenizer from `Jiraya/zoof-tokenizer`.
+
+## Model Weights
+
+- [`zoof-250M-base`](https://huggingface.co/Jiraya/zoof-250M-base)
+- [`zoof-250M-chat`](https://huggingface.co/Jiraya/zoof-250M-chat)
 - Launch a terminal-based chat session.
