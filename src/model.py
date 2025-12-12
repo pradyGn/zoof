@@ -7,7 +7,7 @@ from huggingface_hub import PyTorchModelHubMixin
 from torch.nn import functional as F
 
 
-class SelfAttention(nn.Module, PyTorchModelHubMixin):
+class SelfAttention(nn.Module):
     """
     Multi-head self-attention mechanism using PyTorch's optimized functional attention.
 
@@ -126,7 +126,7 @@ class DecoderBlock(nn.Module):
         return x
 
 
-class zoofv1(nn.Module):
+class zoofv1(nn.Module, PyTorchModelHubMixin):
     """
     GPT-style Decoder-only Transformer Language Model.
 
