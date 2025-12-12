@@ -76,3 +76,7 @@ This script will:
 
 - [`zoof-250M-base`](https://huggingface.co/Jiraya/zoof-250M-base)
 - [`zoof-250M-chat`](https://huggingface.co/Jiraya/zoof-250M-chat)
+
+## Tokenizer
+
+- [`zoof-tokenizer`](https://huggingface.co/Jiraya/zoof-tokenizer)
