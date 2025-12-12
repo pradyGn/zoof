@@ -1,0 +1,30 @@
+import json
+
+from huggingface_hub import hf_hub_download
+from transformers import PreTrainedTokenizerFast
+
+from model import zoofv1
+from utils import config_dataclass, encode_input, generate_response_and_decode
+
+# Download and process config.json from HF
+config_path = hf_hub_download(repo_id="Jiraya/zoof-250M-base", filename="config.json")
+with open(config_path, "r") as f:
+    config = json.load(f)
+config = config_dataclass(config)
+
+# Load the model and move it onto GPU
+model = zoofv1.from_pretrained("Jiraya/zoof-250M-base", config=config)
+model.to("cuda")
+
+# Load the tokenizer
+tokenizer = PreTrainedTokenizerFast.from_pretrained("Jiraya/zoof-tokenizer")
+
+print("Hi there! You're chatting with Zoof.")
+while True:
+    user_input = input("What can I help you with? (Note: You can type 'exit' anytime to stop.)")
+    if user_input.lower() == "exit":
+        print("See you soon!👋")
+        break
+    user_input_ids = encode_input(user_input)
+    model_output = generate_response_and_decode(model, tokenizer, user_input_ids)
+    print(f"Zoof: {model_output}")
