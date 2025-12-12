@@ -76,4 +76,3 @@ This script will:
 
 - [`zoof-250M-base`](https://huggingface.co/Jiraya/zoof-250M-base)
 - [`zoof-250M-chat`](https://huggingface.co/Jiraya/zoof-250M-chat)
-- Launch a terminal-based chat session.
