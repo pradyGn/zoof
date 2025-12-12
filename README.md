@@ -17,7 +17,8 @@ Zoof is a clean, and optimized implementation of a decoder-only Transformer lang
 /
 ├── src/
 │   ├── config.py    # Configuration dataclass
-│   ├── model.py     # Main GPT model, SelfAttention, and MLP classes
+│   ├── model.py     # Main GPT-style model, SelfAttention, and MLP classes
+│   ├── prompt_zoof.py  # Interactive CLI chat script
 │   └── utils.py     # Helper utilities
 ├── .gitignore
 ├── .pre-commit-config.yaml
@@ -44,5 +45,18 @@ cd zoof
 uv sync
 ```
 
-## 🚀 Usage
+## 🎮 Usage: Chat with Zoof
+
+We provide a script to chat with a pre-trained & fine-tuned version of the model (zoof-250M-chat) hosted on Hugging Face.
+
+Run the following to prompt the model:
+```
+python src/prompt_zoof.py
+```
+
+This script will:
+
+- Download the config and model weights from `Jiraya/zoof-250M-chat`.
+- Download the tokenizer from `Jiraya/zoof-tokenizer`.
+- Launch a terminal-based chat session.
 
