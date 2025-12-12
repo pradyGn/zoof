@@ -59,7 +59,7 @@ def generate_response_and_decode(model, tokenizer, ids):
 
     for attempt in range(max_retries):
         try:
-            model_out_ids = model.generate(ids, 1024, temperature=1, eos_tok=47790)[0].tolist()[ids.size(1) : -1]
+            model_out_ids = model.generate(ids, 1024, temperature=0.85, eos_tok=47790)[0].tolist()[ids.size(1) : -1]
             model_out = tokenizer.decode(model_out_ids)
 
             ## clean (a bit) the model output
