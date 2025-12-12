@@ -60,7 +60,13 @@ def generate_response_and_decode(model, tokenizer, ids):
     for attempt in range(max_retries):
         try:
             model_out_ids = model.generate(ids, 1024, temperature=1, eos_tok=47790)[0].tolist()[ids.size(1) : -1]
-            return tokenizer.decode(model_out_ids)
+            model_out = tokenizer.decode(model_out_ids)
+
+            ## clean (a bit) the model output
+            bad_output_pos = model_out.find("### Instruction")
+            model_out = model_out[:bad_output_pos]
+
+            return model_out
 
         except Exception:
             if attempt == max_retries - 1:
