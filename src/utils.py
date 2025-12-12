@@ -61,7 +61,7 @@ def generate_response_and_decode(model, tokenizer, ids):
         try:
             # Generate output. Note: The slicing [len(ids)+1:1] assumes specific
             # batch/sequence length structure for post-processing.
-            model_out_ids = model.generate(ids, 1024, temperature=1, eos_tok=47790)[0].tolist()[len(ids) + 1 : 1]
+            model_out_ids = model.generate(ids, 1024, temperature=1, eos_tok=47790)[0].tolist()[len(ids) : -1]
             return tokenizer.decode(model_out_ids)
 
         except Exception:
