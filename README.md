@@ -11,6 +11,19 @@ Zoof is a clean, and optimized implementation of a decoder-only Transformer lang
 - Optimizer Groups: Custom parameter grouping for AdamW to apply weight decay only to 2D tensors (embeddings, matmuls), skipping biases and layer norms.
 - HuggingFace Integration: Inherits from PyTorchModelHubMixin for easy saving/pushing to the HF Hub.
 
+## ☁️ Run on Google Colab
+
+You can prompt the Zoof model using Google Colab's free T4 GPUs. This is the fastest way to try the model without installing anything locally.
+
+[Click here to open the Interactive Notebook.](https://colab.research.google.com/drive/1KUGAwqIZZtnQbBUYZjoxrsS4v2QNELoE#scrollTo=jbcAcx8ONVim)
+
+The notebook handles:
+
+- Cloning the repository.
+- Installing dependencies (torch, transformers, etc.).
+- Loading the model on the GPU (cuda).
+- Running the interactive chat loop.
+
 ## 📂 Directory Structure
 
 ```
@@ -45,7 +58,7 @@ cd zoof
 uv sync
 ```
 
-## 🎮 Usage: Chat with Zoof
+## 🎮 Usage: Chat with Zoof on a Linux Box
 
 We provide a script to chat with a pre-trained & fine-tuned version of the model (zoof-250M-chat) hosted on Hugging Face.
 
@@ -59,4 +72,3 @@ This script will:
 - Download the config and model weights from `Jiraya/zoof-250M-chat`.
 - Download the tokenizer from `Jiraya/zoof-tokenizer`.
 - Launch a terminal-based chat session.
-
