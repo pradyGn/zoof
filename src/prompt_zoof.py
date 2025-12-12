@@ -22,12 +22,12 @@ model.to("cuda")
 # Load the tokenizer
 tokenizer = PreTrainedTokenizerFast.from_pretrained("Jiraya/zoof-tokenizer")
 
-print("Hi there! You're chatting with Zoof.")
+print("\n\nHi there! You're chatting with Zoof.")
 while True:
     user_input = input("What can I help you with? (Note: You can type 'exit' anytime to stop.)")
     if user_input.lower() == "exit":
         print("See you soon!👋")
         break
-    user_input_ids = encode_input(user_input)
+    user_input_ids = encode_input(tokenizer, user_input)
     model_output = generate_response_and_decode(model, tokenizer, user_input_ids)
     print(f"Zoof: {model_output}")
