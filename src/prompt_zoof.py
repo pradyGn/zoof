@@ -6,14 +6,17 @@ from transformers import PreTrainedTokenizerFast
 from model import zoofv1
 from utils import config_dataclass, encode_input, generate_response_and_decode
 
+# Define the model name to use
+zoof_model = "Jiraya/zoof-250M-chat"
+
 # Download and process config.json from HF
-config_path = hf_hub_download(repo_id="Jiraya/zoof-250M-chat", filename="config.json")
+config_path = hf_hub_download(repo_id=zoof_model, filename="config.json")
 with open(config_path, "r") as f:
     config = json.load(f)
 config = config_dataclass(config)
 
 # Load the model and move it onto GPU
-model = zoofv1.from_pretrained("Jiraya/zoof-250M-base", config=config)
+model = zoofv1.from_pretrained(zoof_model, config=config)
 model.to("cuda")
 
 # Load the tokenizer
