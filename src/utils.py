@@ -1,6 +1,6 @@
 import torch
 
-from config import zoofv1Config
+from config import zoofConfig
 
 
 def config_dataclass(config_dict):
@@ -14,7 +14,7 @@ def config_dataclass(config_dict):
     Returns:
         zoofv1Config: An initialized configuration object.
     """
-    return zoofv1Config(**config_dict)
+    return zoofConfig(**config_dict)
 
 
 def encode_input(tokenizer, user_input: str):
