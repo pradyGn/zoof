@@ -3,8 +3,8 @@ import json
 from huggingface_hub import hf_hub_download
 from transformers import PreTrainedTokenizerFast
 
-from model import zoofv1
 from utils import config_dataclass, encode_input, generate_response_and_decode
+from zoof_v1.model import zoofv1
 
 # Define the model name to use
 zoof_model = "Jiraya/zoof-250M-chat"
