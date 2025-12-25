@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class zoofv1Config:
+class zoofConfig:
     block_size: int
     vocab_size: int
     n_layer: int
