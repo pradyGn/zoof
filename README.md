@@ -29,15 +29,15 @@ Despite being trained on significantly less data than industry baselines, **Zoof
 | Benchmark | Metric | **Zoof-394M (v1.2)** | SmolLM-360M | SmolLM2-360M |
 | :--- | :--- | :---: | :---: | :---: |
 | **Training Tokens** | *Data Efficiency* | **59B** | 600B | 4T |
-| **PIQA** | Physical Commonsense | 69.10 | 71.6 | 71.7 |
-| **BoolQ** | Boolean Reasoning | 61.04 | - | - |
-| **WinoGrad** | Pronoun Resolution | 51.70 | 52.8 | 52.5 |
-| **HellaSwag** | Commonsense NLI | 44.00 | 51.8 | 54.5 |
-| **OBQA** | OpenBookQA | 36.40 | 37.2 | 37.4 |
-| **ARC-E** | Science (Easy) | 44.02 | - | - |
-| **ARC-C** | Science (Challenge) | 31.66 | - | - |
-| **SIQA** | Social Commonsense | 38.31 | - | - |
-| **MMLU** | General Knowledge | 29.33 | 34.4 | 35.8 |
+| **PIQA** | Physical Commonsense | 69.1 | 71.6 | 71.7 |
+| **BoolQ** | Boolean Reasoning | 61.0 | - | - |
+| **WinoGrad** | Pronoun Resolution | 51.7 | 52.8 | 52.5 |
+| **HellaSwag** | Commonsense NLI | 44.0 | 51.8 | 54.5 |
+| **OBQA** | OpenBookQA | 36.4 | 37.2 | 37.4 |
+| **ARC-E** | Science (Easy) | 44.0 | - | - |
+| **ARC-C** | Science (Challenge) | 31.7 | - | - |
+| **SIQA** | Social Commonsense | 38.3 | - | - |
+| **MMLU** | General Knowledge | 29.3 | 34.4 | 35.8 |
 
 > **Note:** Zoof achieves these scores with **~1.5% of the training compute** used for SmolLM2 (59B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
 
