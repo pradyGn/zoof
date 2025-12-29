@@ -7,7 +7,7 @@ from utils import config_dataclass, encode_input, generate_response_and_decode
 from zoof_v1_2.model import zoof_v1_2
 
 # Define the model name to use
-zoof_model = "Jiraya/zoof-250M-chat"
+zoof_model = "Jiraya/zoof-v1.2-394M-chat"
 
 # Download and process config.json from HF
 config_path = hf_hub_download(repo_id=zoof_model, filename="config.json")
