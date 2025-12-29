@@ -14,6 +14,14 @@
 
 **Zoof** is a high-efficiency Small Language Model (SLM) engineered from scratch. It demonstrates how modern architectural choices and high-quality data can yield competitive performance in the sub-400M parameter regime, even with limited compute.
 
+## ⚡ Key Features
+
+- **Pre-Norm Architecture:** Applies `RMSNorm` before self-attention and MLP blocks for better gradient flow and training stability.
+- **Rotary Positional Embeddings (RoPE):** Replaces absolute learned positional embeddings from v1 with `RoPE`, enabling better generalization to longer contexts.
+- **Flash Attention:** Automatically uses PyTorch's `F.scaled_dot_product_attention`, leveraging Flash Attention kernels when available for efficient $O(N^2)$ computing.
+- **Smart Initialization:** Implements a specific weight initialization strategy (scaling projections by $1/\sqrt{2L}$) to stabilize variance in deep residual paths.
+- **Extensive Pre-training:** Trained on approximately **59 Billion tokens** from the `FineWeb-Edu` dataset, focusing on reasoning-dense content.
+
 ## ☁️ Quick Start (Google Colab)
 
 You can prompt the Zoof model using Google Colab's free T4 GPUs. This is the fastest way to try the model without installing anything locally.
@@ -58,14 +66,6 @@ This script will:
 - Download the config and model weights from `Jiraya/zoof-250M-chat`.
 - Download the tokenizer from `Jiraya/zoof-tokenizer`.
 - Launch an interactive session.
-
-## ⚡ Key Features
-
-- **Pre-Norm Architecture:** Applies `RMSNorm` before self-attention and MLP blocks for better gradient flow and training stability.
-- **Rotary Positional Embeddings (RoPE):** Replaces absolute learned positional embeddings from v1 with `RoPE`, enabling better generalization to longer contexts.
-- **Flash Attention:** Automatically uses PyTorch's `F.scaled_dot_product_attention`, leveraging Flash Attention kernels when available for efficient $O(N^2)$ computing.
-- **Smart Initialization:** Implements a specific weight initialization strategy (scaling projections by $1/\sqrt{2L}$) to stabilize variance in deep residual paths.
-- **Extensive Pre-training:** Trained on approximately **59 Billion tokens** from the `FineWeb-Edu` dataset, focusing on reasoning-dense content.
 
 ## 📊 Performance & Benchmarks
 
