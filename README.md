@@ -14,33 +14,6 @@
 
 **Zoof** is a high-efficiency Small Language Model (SLM) engineered from scratch. It demonstrates how modern architectural choices and high-quality data can yield competitive performance in the sub-400M parameter regime, even with limited compute.
 
-## ⚡ Key Features
-
-- **Pre-Norm Architecture:** Applies `RMSNorm` before self-attention and MLP blocks for better gradient flow and training stability.
-- **Rotary Positional Embeddings (RoPE):** Replaces absolute learned positional embeddings from v1 with `RoPE`, enabling better generalization to longer contexts.
-- **Flash Attention:** Automatically uses PyTorch's `F.scaled_dot_product_attention`, leveraging Flash Attention kernels when available for efficient $O(N^2)$ computing.
-- **Smart Initialization:** Implements a specific weight initialization strategy (scaling projections by $1/\sqrt{2L}$) to stabilize variance in deep residual paths.
-- **Extensive Pre-training:** Trained on approximately **59 Billion tokens** from the `FineWeb-Edu` dataset, focusing on reasoning-dense content.
-
-## 📊 Performance & Benchmarks
-
-Despite being trained on significantly less data than industry baselines, **Zoof-394M** demonstrates competitive performance, particularly in tasks requiring boolean logic and physical commonsense.
-
-| Benchmark | Metric | **Zoof-394M (v1.2)** | SmolLM-360M | SmolLM2-360M |
-| :--- | :--- | :---: | :---: | :---: |
-| **Training Tokens** | *Data Efficiency* | **59B** | 600B | 4T |
-| **PIQA** | Physical Commonsense | 69.1 | 71.6 | 71.7 |
-| **BoolQ** | Boolean Reasoning | 61.0 | - | - |
-| **WinoGrad** | Pronoun Resolution | 51.7 | 52.8 | 52.5 |
-| **HellaSwag** | Commonsense NLI | 44.0 | 51.8 | 54.5 |
-| **OBQA** | OpenBookQA | 36.4 | 37.2 | 37.4 |
-| **ARC-E** | Science (Easy) | 44.0 | - | - |
-| **ARC-C** | Science (Challenge) | 31.7 | - | - |
-| **SIQA** | Social Commonsense | 38.3 | - | - |
-| **MMLU** | General Knowledge | 29.3 | 34.4 | 35.8 |
-
-> **Note:** Zoof achieves these scores with **~1.5% of the training compute** used for SmolLM2 (59B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
-
 ## ☁️ Quick Start (Google Colab)
 
 You can prompt the Zoof model using Google Colab's free T4 GPUs. This is the fastest way to try the model without installing anything locally.
@@ -85,6 +58,33 @@ This script will:
 - Download the config and model weights from `Jiraya/zoof-250M-chat`.
 - Download the tokenizer from `Jiraya/zoof-tokenizer`.
 - Launch an interactive session.
+
+## ⚡ Key Features
+
+- **Pre-Norm Architecture:** Applies `RMSNorm` before self-attention and MLP blocks for better gradient flow and training stability.
+- **Rotary Positional Embeddings (RoPE):** Replaces absolute learned positional embeddings from v1 with `RoPE`, enabling better generalization to longer contexts.
+- **Flash Attention:** Automatically uses PyTorch's `F.scaled_dot_product_attention`, leveraging Flash Attention kernels when available for efficient $O(N^2)$ computing.
+- **Smart Initialization:** Implements a specific weight initialization strategy (scaling projections by $1/\sqrt{2L}$) to stabilize variance in deep residual paths.
+- **Extensive Pre-training:** Trained on approximately **59 Billion tokens** from the `FineWeb-Edu` dataset, focusing on reasoning-dense content.
+
+## 📊 Performance & Benchmarks
+
+Despite being trained on significantly less data than industry baselines, **Zoof-394M** demonstrates competitive performance, particularly in tasks requiring boolean logic and physical commonsense.
+
+| Benchmark | Metric | **Zoof-394M (v1.2)** | SmolLM-360M | SmolLM2-360M |
+| :--- | :--- | :---: | :---: | :---: |
+| **Training Tokens** | *Data Efficiency* | **59B** | 600B | 4T |
+| **PIQA** | Physical Commonsense | 69.1 | 71.6 | 71.7 |
+| **BoolQ** | Boolean Reasoning | 61.0 | - | - |
+| **WinoGrad** | Pronoun Resolution | 51.7 | 52.8 | 52.5 |
+| **HellaSwag** | Commonsense NLI | 44.0 | 51.8 | 54.5 |
+| **OBQA** | OpenBookQA | 36.4 | 37.2 | 37.4 |
+| **ARC-E** | Science (Easy) | 44.0 | - | - |
+| **ARC-C** | Science (Challenge) | 31.7 | - | - |
+| **SIQA** | Social Commonsense | 38.3 | - | - |
+| **MMLU** | General Knowledge | 29.3 | 34.4 | 35.8 |
+
+> **Note:** Zoof achieves these scores with **~1.5% of the training compute** used for SmolLM2 (59B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
 
 ## Directory Structure
 
