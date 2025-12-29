@@ -24,7 +24,7 @@ tokenizer = PreTrainedTokenizerFast.from_pretrained("Jiraya/zoof-tokenizer")
 
 print("\n\nHi there! You're chatting with Zoof.")
 while True:
-    user_input = input("What can I help you with? (Note: You can type 'exit' anytime to stop.)\n\nUser:")
+    user_input = input("What can I help you with next? (Note: You can type 'exit' anytime to stop.)\n\nUser:")
     if user_input.lower() == "exit":
         print("See you soon!👋")
         break
