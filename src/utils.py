@@ -32,7 +32,7 @@ def encode_input(tokenizer, user_input: str):
         torch.Tensor: A tensor of shape (1, seq_len) containing the input IDs
                       on the 'cuda' device.
     """
-    ids = tokenizer.encode(f"### Instruction\n{user_input}")
+    ids = tokenizer.encode(user_input)
     ids.append(47791)  # Append custom End-of-Line or separator token
     ids = torch.tensor(ids).view(1, -1)
     ids = ids.to("cuda")
@@ -62,9 +62,7 @@ def generate_response_and_decode(model, tokenizer, ids):
             model_out_ids = model.generate(ids, 1024, temperature=0.85, eos_tok=47790)[0].tolist()[ids.size(1) : -1]
             model_out = tokenizer.decode(model_out_ids)
 
-            ## clean (a bit) the model output
-            bad_output_pos = model_out.find("### Instruction")
-            model_out = model_out[:bad_output_pos]
+            model_out = model_out
 
             return model_out
 
