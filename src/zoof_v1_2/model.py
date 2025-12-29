@@ -84,7 +84,7 @@ class DecoderBlock(nn.Module):
         return x
 
 
-class zoofv1_2(nn.Module, PyTorchModelHubMixin):
+class zoof_v1_2(nn.Module, PyTorchModelHubMixin):
     def __init__(self, config):
         super().__init__()
         assert config.vocab_size is not None

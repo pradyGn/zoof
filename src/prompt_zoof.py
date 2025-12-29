@@ -4,7 +4,7 @@ from huggingface_hub import hf_hub_download
 from transformers import PreTrainedTokenizerFast
 
 from utils import config_dataclass, encode_input, generate_response_and_decode
-from zoof_v1.model import zoofv1
+from zoof_v1_2.model import zoof_v1_2
 
 # Define the model name to use
 zoof_model = "Jiraya/zoof-250M-chat"
@@ -16,7 +16,7 @@ with open(config_path, "r") as f:
 config = config_dataclass(config)
 
 # Load the model and move it onto GPU
-model = zoofv1.from_pretrained(zoof_model, config=config)
+model = zoof_v1_2.from_pretrained(zoof_model, config=config)
 model.to("cuda")
 
 # Load the tokenizer
