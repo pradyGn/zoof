@@ -1,15 +1,14 @@
-# zoof
+# zoof (v1.2)
 
-Zoof is a clean, and optimized implementation of a decoder-only Transformer language model in PyTorch. It follows the GPT architecture with modern enhancements for training stability and performance.
+Zoof is a clean, and optimized implementation of a decoder-only Transformer language model in PyTorch.
 
 ## ⚡ Key Features
 
-- Pre-Norm Architecture: Applies `LayerNorm` before self-attention and MLP blocks (standard in GPT-2/3) for better gradient flow and training stability.
+- Pre-Norm Architecture: Applies `RMSNorm` before self-attention and MLP blocks for better gradient flow and training stability.
+- Rotary Positional Embeddings (RoPE): Uses `RoPE` in each attention block replacing learnt positional encoding from zoof v1.
 - Flash Attention: Automatically uses PyTorch's `F.scaled_dot_product_attention`, leveraging Flash Attention kernels when available for efficient $O(N^2)$ computing.
-- Weight Tying: Shares weights between the token embedding layer and the final output logic head, reducing parameter count.
 - Smart Initialization: Implements a specific weight initialization strategy (scaling projections by $1/\sqrt{2L}$) to stabilize variance in deep residual paths.
-- Optimizer Groups: Custom parameter grouping for AdamW to apply weight decay only to 2D tensors (embeddings, matmuls), skipping biases and layer norms.
-- HuggingFace Integration: Inherits from PyTorchModelHubMixin for easy saving/pushing to the HF Hub.
+- Extensive Pre-training: Trained on approximately 59 Billion tokens from the `FineWeb-Edu` dataset.
 
 ## ☁️ Run on Google Colab
 
@@ -60,11 +59,11 @@ uv sync
 
 ## 🎮 Usage: Chat with Zoof on a Linux Box
 
-We provide a script to chat with a pre-trained & fine-tuned version of the model (zoof-250M-chat) hosted on Hugging Face.
+I've provided a script to chat with a pre-trained & fine-tuned version of the model (zoof-v1.2-394M-chat) hosted on Hugging Face.
 
 Run the following to prompt the model:
 ```
-python src/prompt_zoof.py
+python prompt_zoof.py
 ```
 
 This script will:
@@ -72,10 +71,10 @@ This script will:
 - Download the config and model weights from `Jiraya/zoof-250M-chat`.
 - Download the tokenizer from `Jiraya/zoof-tokenizer`.
 
-## Model Weights
+## Model Weights (v1.2)
 
-- [`zoof-250M-base`](https://huggingface.co/Jiraya/zoof-250M-base)
-- [`zoof-250M-chat`](https://huggingface.co/Jiraya/zoof-250M-chat)
+- [`zoof-v1.2-394M`](https://huggingface.co/Jiraya/zoof-v1.2-394M)
+- [`zoof-v1.2-394M-chat`](https://huggingface.co/Jiraya/zoof-v1.2-394M-chat)
 
 ## Tokenizer
 
