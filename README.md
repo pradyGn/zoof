@@ -89,7 +89,7 @@ Despite being trained on significantly less data than industry baselines, **Zoof
 ## Directory Structure
 
 ```
-/
+│
 ├── src/
 │   ├── zoof_v1
 │   │   └── model.py    # Model definition for v1
