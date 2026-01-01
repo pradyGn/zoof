@@ -71,7 +71,7 @@ This script will:
 
 Despite being trained on significantly less data than industry baselines, **Zoof-394M** demonstrates competitive performance, particularly in tasks requiring boolean logic and physical commonsense.
 
-| Benchmark | Metric | **Zoof-394M (v1.2.1)** | SmolLM-360M | SmolLM2-360M | Qwen2.5-0.5B |
+| Benchmark | Metric | **Zoof-v1.2-394M** | SmolLM-360M | SmolLM2-360M | Qwen2.5-0.5B |
 | :--- | :--- | :---: | :---: | :---: | :---: |
 | **Training Tokens** | *Data Efficiency* | **67B** | 600B | 4T | 18T |
 | **PIQA** | Physical Commonsense | 69.4 | 71.6 | 71.7 | 69.9 |
