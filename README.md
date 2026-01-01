@@ -71,18 +71,18 @@ This script will:
 
 Despite being trained on significantly less data than industry baselines, **Zoof-394M** demonstrates competitive performance, particularly in tasks requiring boolean logic and physical commonsense.
 
-| Benchmark | Metric | **Zoof-394M (v1.2)** | SmolLM-360M | SmolLM2-360M |
-| :--- | :--- | :---: | :---: | :---: |
-| **Training Tokens** | *Data Efficiency* | **59B** | 600B | 4T |
-| **PIQA** | Physical Commonsense | 69.1 | 71.6 | 71.7 |
-| **BoolQ** | Boolean Reasoning | 61.0 | - | - |
-| **WinoGrad** | Pronoun Resolution | 51.7 | 52.8 | 52.5 |
-| **HellaSwag** | Commonsense NLI | 44.0 | 51.8 | 54.5 |
-| **OBQA** | OpenBookQA | 36.4 | 37.2 | 37.4 |
-| **ARC-E** | Science (Easy) | 44.0 | - | - |
-| **ARC-C** | Science (Challenge) | 31.7 | - | - |
-| **SIQA** | Social Commonsense | 38.3 | - | - |
-| **MMLU** | General Knowledge | 29.3 | 34.4 | 35.8 |
+| Benchmark | Metric | **Zoof-394M (v1.2.1)** | SmolLM-360M | SmolLM2-360M | Qwen2.5-0.5B |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Training Tokens** | *Data Efficiency* | **67B** | 600B | 4T | 18T |
+| **PIQA** | Physical Commonsense | 69.4 | 71.6 | 71.7 | 69.9 |
+| **BoolQ** | Boolean Reasoning | 61.9 | - | - | - |
+| **WinoGrade** | Pronoun Resolution | 54.1 | 52.8 | 52.5 | 54.1 |
+| **HellaSwag** | Commonsense NLI | 46.0 | 51.8 | 54.5 | 51.2 |
+| **OBQA** | OpenBookQA | 35.6 | 37.2 | 37.4 | 37.4 |
+| **ARC-E** | Science (Easy) | 42.9 | - | - | - |
+| **ARC-C** | Science (Challenge) | 30.5 | - | - | 35.6 |
+| **SIQA** | Social Commonsense | 39.2 | - | - | - |
+| **MMLU** | General Knowledge (cloze) | 28.6 | 34.4 | 35.8 | 33.7 |
 
 > **Note:** Zoof achieves these scores with **~1.5% of the training compute** used for SmolLM2 (59B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
 
