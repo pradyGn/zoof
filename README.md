@@ -84,7 +84,7 @@ Despite being trained on significantly less data than industry baselines, **Zoof
 | **SIQA** | Social Commonsense | 39.2 | - | - | - |
 | **MMLU** | General Knowledge (cloze) | 28.6 | 34.4 | 35.8 | 33.7 |
 
-> **Note:** Zoof achieves these scores with **~1.5% of the training compute** used for SmolLM2 (59B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
+> **Note:** Zoof achieves these scores with **~1.7% of the training compute** used for SmolLM2 (67B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
 
 ## Directory Structure
 
