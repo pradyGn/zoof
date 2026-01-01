@@ -20,7 +20,7 @@
 - **Rotary Positional Embeddings (RoPE):** Replaces absolute learned positional embeddings from v1 with `RoPE`, enabling better generalization to longer contexts.
 - **Flash Attention:** Automatically uses PyTorch's `F.scaled_dot_product_attention`, leveraging Flash Attention kernels when available for efficient $O(N^2)$ computing.
 - **Smart Initialization:** Implements a specific weight initialization strategy (scaling projections by $1/\sqrt{2L}$) to stabilize variance in deep residual paths.
-- **Extensive Pre-training:** Trained on approximately **59 Billion tokens** from the `FineWeb-Edu` dataset, focusing on reasoning-dense content.
+- **Extensive Pre-training:** Trained on approximately **67 Billion tokens** from the `FineWeb-Edu` dataset, focusing on reasoning-dense content.
 
 ## ☁️ Quick Start (Google Colab)
 
