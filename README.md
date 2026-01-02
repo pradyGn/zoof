@@ -69,7 +69,7 @@ This script will:
 
 ## 📊 Performance & Benchmarks
 
-Despite being trained on significantly less data than industry baselines, **Zoof-394M** demonstrates competitive performance, particularly in tasks requiring boolean logic and physical commonsense.
+Despite being trained on significantly less data than industry baselines, **zoof-v1.2-394M** demonstrates competitive performance, particularly in tasks requiring boolean logic and physical commonsense.
 
 | Benchmark | Metric | **Zoof-v1.2-394M** | SmolLM-360M | SmolLM2-360M | Qwen2.5-0.5B |
 | :--- | :--- | :---: | :---: | :---: | :---: |
