@@ -65,7 +65,7 @@ def generate_response_and_decode(model, tokenizer, ids):
 
             model_out = model_out
 
-            return model_out, model_out_ids
+            return model_out, model_out_ids + [47792]
 
         except Exception:
             if attempt == max_retries - 1:
