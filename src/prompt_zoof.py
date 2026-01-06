@@ -33,5 +33,5 @@ while True:
     user_input_ids = encode_input(tokenizer, chat_history_ids, user_input)
 
     model_output, model_out_ids = generate_response_and_decode(model, tokenizer, user_input_ids)
-    chat_history_ids += user_input_ids + model_out_ids
+    chat_history_ids = user_input_ids.tolist() + model_out_ids
     print(f"Zoof: {model_output}")
