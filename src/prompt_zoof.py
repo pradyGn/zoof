@@ -22,6 +22,8 @@ model.to("cuda")
 # Load the tokenizer
 tokenizer = PreTrainedTokenizerFast.from_pretrained("Jiraya/zoof-tokenizer")
 
+# This is a navie implementation, will update once I implement kv cache
+chat_history_ids = []
 print("\n\nHi there! You're chatting with Zoof.")
 while True:
     user_input = input("What can I help you with next? (Note: You can type 'exit' anytime to stop.)\n\nUser:")
@@ -29,5 +31,8 @@ while True:
         print("See you soon!👋")
         break
     user_input_ids = encode_input(tokenizer, user_input)
-    model_output = generate_response_and_decode(model, tokenizer, user_input_ids)
+
+    user_input_ids_wi_history = chat_history_ids + user_input_ids
+    model_output, model_out_ids = generate_response_and_decode(model, tokenizer, user_input_ids_wi_history[-512:])
+    chat_history_ids += user_input_ids + model_out_ids
     print(f"Zoof: {model_output}")
