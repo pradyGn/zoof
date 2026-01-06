@@ -17,7 +17,7 @@ def config_dataclass(config_dict):
     return zoofConfig(**config_dict)
 
 
-def encode_input(tokenizer, user_input: str):
+def encode_input(tokenizer, chat_history_ids, user_input: str):
     """
     Preprocesses and tokenizes user input for the model.
 
@@ -34,7 +34,8 @@ def encode_input(tokenizer, user_input: str):
     """
     ids = tokenizer.encode(user_input)
     ids.append(47791)  # Append custom End-of-Line or separator token
-    ids = torch.tensor(ids).view(1, -1)
+    ids = chat_history_ids + ids
+    ids = torch.tensor(ids[-512:]).view(1, -1)
     ids = ids.to("cuda")
     return ids
 
