@@ -7,6 +7,7 @@ from huggingface_hub import PyTorchModelHubMixin
 from rotary_embedding_torch import RotaryEmbedding
 from torch.nn import functional as F
 
+# TODO: Add kv chache.
 
 class SelfGQAttention(nn.Module):
     def __init__(self, config):
