@@ -30,9 +30,8 @@ while True:
     if user_input.lower() == "exit":
         print("See you soon!👋")
         break
-    user_input_ids = encode_input(tokenizer, user_input)
+    user_input_ids = encode_input(tokenizer, chat_history_ids, user_input)
 
-    user_input_ids_wi_history = chat_history_ids + user_input_ids
-    model_output, model_out_ids = generate_response_and_decode(model, tokenizer, user_input_ids_wi_history[-512:])
+    model_output, model_out_ids = generate_response_and_decode(model, tokenizer, user_input_ids)
     chat_history_ids += user_input_ids + model_out_ids
     print(f"Zoof: {model_output}")
