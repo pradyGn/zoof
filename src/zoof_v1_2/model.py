@@ -258,7 +258,7 @@ class zoof_v1_2(nn.Module, PyTorchModelHubMixin):
             if eos_tok is not None and idx_next == eos_tok:
                 break
 
-            return idx
+        return idx
 
     @torch.no_grad()
     def calculate_inference_loss(self, idx, targets):
