@@ -76,7 +76,7 @@ Despite being trained on significantly less data than industry baselines, **zoof
 | **Training Tokens** | *Data Efficiency* | **67B** | 600B | 4T | 18T |
 | **PIQA** | Physical Commonsense | 69.4 | 71.6 | 71.7 | 69.9 |
 | **BoolQ** | Boolean Reasoning | 61.9 | - | - | - |
-| **WinoGrade** | Pronoun Resolution | 54.1 | 52.8 | 52.5 | 54.1 |
+| **WinoGrande** | Pronoun Resolution | 54.1 | 52.8 | 52.5 | 54.1 |
 | **HellaSwag** | Commonsense NLI | 46.0 | 51.8 | 54.5 | 51.2 |
 | **OBQA** | OpenBookQA | 35.6 | 37.2 | 37.4 | 37.4 |
 | **ARC-E** | Science (Easy) | 42.9 | - | - | - |
