@@ -147,10 +147,8 @@ class zoof_v1_2(nn.Module, PyTorchModelHubMixin):
             torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
     def forward(self, idx, targets=None, mask=None, past_kv_list=None, use_cache=False):
-        device = idx.device
-        b, t = idx.size()
+        _, t = idx.size()
         assert t <= self.config.block_size, f"Cannot forward sequence of length {t}, block size is only {self.config.block_size}"
-        pos = torch.arange(0, t, dtype=torch.long, device=device) # shape (t)
 
         tok_emb_out = self.LangModel.w_token_embd(idx)
         x = self.LangModel.dropout(tok_emb_out)
