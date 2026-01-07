@@ -193,7 +193,7 @@ class zoof_v1_2(nn.Module, PyTorchModelHubMixin):
         return mfu
 
     @torch.no_grad()
-    def generate(self, idx, max_new_tokens, eos_tok=None, temperature=1.0, top_k=None):
+    def generate(self, idx, max_new_tokens, repetition_penalty=None, eos_tok=None, temperature=1.0, top_k=None):
         """
         Take a conditioning sequence of indices idx (LongTensor of shape (b,t)) and complete
         the sequence max_new_tokens times, feeding the predictions back into the model each time.
@@ -205,8 +205,15 @@ class zoof_v1_2(nn.Module, PyTorchModelHubMixin):
             idx_cond = idx if idx.size(1) <= self.config.block_size else idx[:, -self.config.block_size :]
             # forward the model to get the logits for the index in the sequence
             logits, _ = self(idx_cond)
-            # pluck the logits at the final step and scale by desired temperature
-            logits = logits[:, -1, :] / temperature
+            # pluck the logits at the final step
+            next_token_logits = logits[:, -1, :]
+            # apply repition penalty
+            if repetition_penalty is not None:
+                score = torch.gather(next_token_logits, 1, idx_cond)
+                score = torch.where(score < 0, score*repetition_penalty, score/repetition_penalty)
+                next_token_logits.scatter_(1, idx_cond, score)
+            # scale by desired temperature
+            logits = next_token_logits / temperature
             # optionally crop the logits to only the top k options
             if top_k is not None:
                 v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
