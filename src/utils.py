@@ -60,7 +60,7 @@ def generate_response_and_decode(model, tokenizer, ids):
 
     for attempt in range(max_retries):
         try:
-            model_out_ids = model.generate(ids, 1024, repetition_penalty=1.15, temperature=0.6, eos_tok=47792)[0].tolist()[ids.size(1) : -1]
+            model_out_ids = model.generate(ids, 1024, repetition_penalty=1.15, temperature=0.6, eos_tok=47792, use_kv_cache=True)[0].tolist()[ids.size(1) : -1]
             model_out = tokenizer.decode(model_out_ids)
 
             model_out = model_out
