@@ -7,52 +7,63 @@ from huggingface_hub import PyTorchModelHubMixin
 from rotary_embedding_torch import RotaryEmbedding
 from torch.nn import functional as F
 
-# TODO: Add kv chache.
 
 class SelfGQAttention(nn.Module):
-    def __init__(self, config):
-        super().__init__()
-        assert config.n_embd % config.n_head == 0
+  def __init__(self, config):
+    super().__init__()
+    assert config.n_embd%config.n_head == 0
 
-        self.n_embd = config.n_embd
-        self.n_head = config.n_head
-        self.dropout = config.dropout
+    self.n_embd = config.n_embd
+    self.n_head = config.n_head
+    self.dropout = config.dropout
 
-        self.rotary_emb = RotaryEmbedding(dim=config.n_embd // config.n_head)
-        self.q_linear = nn.Linear(config.n_embd, config.n_embd, bias=config.bias)
-        self.kv_linear = nn.Linear(config.n_embd, 2 * config.n_embd // 8, bias=config.bias)
+    self.rotary_emb = RotaryEmbedding(dim = config.n_embd // config.n_head)
+    self.q_linear = nn.Linear(config.n_embd, config.n_embd, bias=config.bias)
+    self.kv_linear = nn.Linear(config.n_embd, 2 * config.n_embd // 8, bias=config.bias)
 
-        self.c_proj = nn.Linear(config.n_embd, config.n_embd, bias=config.bias)
+    self.c_proj = nn.Linear(config.n_embd, config.n_embd, bias=config.bias)
 
-        self.resid_dropout = nn.Dropout(config.dropout)
+    self.resid_dropout = nn.Dropout(config.dropout)
 
-    def forward(self, x, mask=None):
-        B, T, _ = x.size()
+  def forward(self, x, mask=None, past_kv=None, use_cache=False):
+    offset = 0
+    if past_kv is not None:
+      past_k, past_v = past_kv
+      offset = past_k.size(-2)
 
-        q = self.q_linear(x)
-        k, v = self.kv_linear(x).split(self.n_embd // 8, dim=2)
+    B, T, _ = x.size()
 
-        q = q.view(B, T, self.n_head, self.n_embd // self.n_head).transpose(1, 2)
-        k = k.repeat(1, 1, 8).view(B, T, self.n_head, self.n_embd // self.n_head).transpose(1, 2)
-        v = v.repeat(1, 1, 8).view(B, T, self.n_head, self.n_embd // self.n_head).transpose(1, 2)
+    q = self.q_linear(x)
+    k, v = self.kv_linear(x).split(self.n_embd // 8, dim=2)
 
-        q = self.rotary_emb.rotate_queries_or_keys(q)
-        k = self.rotary_emb.rotate_queries_or_keys(k)
+    q = q.view(B, T, self.n_head, self.n_embd // self.n_head).transpose(1, 2)
+    k = k.repeat(1, 1, 8).view(B, T, self.n_head, self.n_embd // self.n_head).transpose(1, 2)
+    v = v.repeat(1, 1, 8).view(B, T, self.n_head, self.n_embd // self.n_head).transpose(1, 2)
 
-        y = torch.nn.functional.scaled_dot_product_attention(
-            query=q,
-            key=k,
-            value=v,
-            attn_mask=None if mask is None else mask,
-            dropout_p=self.dropout if self.training else 0,
-            is_causal=True if mask is None else False,
-        )
+    q = self.rotary_emb.rotate_queries_or_keys(q, offset=offset)
+    k = self.rotary_emb.rotate_queries_or_keys(k, offset=offset)
 
-        y = y.transpose(1, 2).contiguous().view(B, T, self.n_embd)
-        y = self.resid_dropout(self.c_proj(y))
+    if past_kv is not None:
+      k = torch.cat([past_k, k], dim=-2)
+      v = torch.cat([past_v, v], dim=-2)
+    
+    present_kv = None
+    if use_cache:
+      present_kv = (k, v)
 
-        return y
+    y = torch.nn.functional.scaled_dot_product_attention(
+        query = q,
+        key = k,
+        value = v,
+        attn_mask = None if mask is None else mask,
+        dropout_p = self.dropout if self.training else 0,
+        is_causal = True if mask is None and past_kv is None else False
+    )
 
+    y = y.transpose(1, 2).contiguous().view(B, T, self.n_embd)
+    y = self.resid_dropout(self.c_proj(y))
+
+    return y, present_kv
 
 class MLP(nn.Module):
     def __init__(self, config):
@@ -71,18 +82,19 @@ class MLP(nn.Module):
 
 
 class DecoderBlock(nn.Module):
-    def __init__(self, config):
-        super().__init__()
-        self.ln_1 = nn.RMSNorm(config.n_embd)
-        self.attn = SelfGQAttention(config)
-        self.ln_2 = nn.RMSNorm(config.n_embd)
-        self.mlp = MLP(config)
+  def __init__(self, config):
+    super().__init__()
+    self.ln_1 = nn.RMSNorm(config.n_embd)
+    self.attn = SelfGQAttention(config)
+    self.ln_2 = nn.RMSNorm(config.n_embd)
+    self.mlp = MLP(config)
 
-    def forward(self, x, mask=None):
-        x = self.ln_1(x)
-        x = x + self.attn(x, mask)
-        x = x + self.mlp(self.ln_2(x))
-        return x
+  def forward(self, x, mask=None, past_kv=None, use_cache=False):
+    x = self.ln_1(x)
+    attn_out, present_kv = self.attn(x, mask, past_kv, use_cache)
+    x = x + attn_out
+    x = x + self.mlp(self.ln_2(x))
+    return x, present_kv
 
 
 class zoof_v1_2(nn.Module, PyTorchModelHubMixin):
@@ -134,24 +146,32 @@ class zoof_v1_2(nn.Module, PyTorchModelHubMixin):
         elif isinstance(module, nn.Embedding):
             torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
-    def forward(self, idx, targets=None, mask=None):
+    def forward(self, idx, targets=None, mask=None, past_kv_list=None, use_cache=False):
+        device = idx.device
         b, t = idx.size()
         assert t <= self.config.block_size, f"Cannot forward sequence of length {t}, block size is only {self.config.block_size}"
+        pos = torch.arange(0, t, dtype=torch.long, device=device) # shape (t)
 
-        tok_emb_out = self.LangModel.w_token_embd(idx)  # token embeddings of shape (b, t, n_embd)
+        tok_emb_out = self.LangModel.w_token_embd(idx)
         x = self.LangModel.dropout(tok_emb_out)
-        for DeBlock in self.LangModel.DecoderStack:
-            x = DeBlock(x, mask)
+
+        present_kv_list = [] if use_cache else None
+        for ix, DeBlock in enumerate(self.LangModel.DecoderStack):
+            past_kv = None
+            if past_kv_list is not None:
+                past_kv = past_kv_list[ix]
+            x, present_kv = DeBlock(x, mask, past_kv, use_cache)
+            if use_cache:
+                present_kv_list.append(present_kv)
         x = self.LangModel.ln_f(x)
 
         if targets is not None:
             logits = self.lm_head(x)
             loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=-1)
         else:
-            # inference-time mini-optimization: only forward the lm_head on the very last position
-            logits = self.lm_head(x[:, [-1], :])  # note: using list [-1] to preserve the time dim
+            logits = self.lm_head(x[:, [-1], :])
             loss = None
-        return logits, loss
+        return logits, loss, present_kv_list
 
     def configure_optimizers(self, weight_decay, learning_rate, betas, device_type):
         # start with all of the candidate parameters
@@ -193,31 +213,43 @@ class zoof_v1_2(nn.Module, PyTorchModelHubMixin):
         return mfu
 
     @torch.no_grad()
-    def generate(self, idx, max_new_tokens, repetition_penalty=None, eos_tok=None, temperature=1.0, top_k=None):
+    def generate(self, idx, max_new_tokens, repetition_penalty=None, eos_tok=None, temperature=1.0, top_k=None, use_kv_cache=False):
         """
         Take a conditioning sequence of indices idx (LongTensor of shape (b,t)) and complete
         the sequence max_new_tokens times, feeding the predictions back into the model each time.
         Most likely you'll want to make sure to be in model.eval() mode of operation for this.
         """
 
+        present_kv_list = None
         for _ in range(max_new_tokens):
             # if the sequence context is growing too long we must crop it at block_size
-            idx_cond = idx if idx.size(1) <= self.config.block_size else idx[:, -self.config.block_size :]
+            # KV cache is useless for context size gt block_size in current implementation
+            idx_cond = idx if idx.size(1) <= self.config.block_size else idx[:, -self.config.block_size:]
+            if present_kv_list is not None and present_kv_list[0][0].size(-2) >= self.config.block_size:
+                present_kv_list = None
+                
             # forward the model to get the logits for the index in the sequence
-            logits, _ = self(idx_cond)
-            # pluck the logits at the final step
+            if use_kv_cache and present_kv_list is not None:
+                logits, _, present_kv_list = self(idx_cond[:, [-1]], past_kv_list=present_kv_list, use_cache=use_kv_cache)
+            elif use_kv_cache:
+                logits, _, present_kv_list = self(idx_cond, use_cache=use_kv_cache)
+            else:
+                logits, _, _ = self(idx_cond)
+
+            # pluck the logits at the final step and implement repetition penalty
             next_token_logits = logits[:, -1, :]
-            # apply repition penalty
             if repetition_penalty is not None:
                 score = torch.gather(next_token_logits, 1, idx_cond)
                 score = torch.where(score < 0, score*repetition_penalty, score/repetition_penalty)
                 next_token_logits.scatter_(1, idx_cond, score)
+
             # scale by desired temperature
             logits = next_token_logits / temperature
+            # logits = logits[:, -1, :] / temperature
             # optionally crop the logits to only the top k options
             if top_k is not None:
                 v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
-                logits[logits < v[:, [-1]]] = -float("Inf")
+                logits[logits < v[:, [-1]]] = -float('Inf')
             # apply softmax to convert logits to (normalized) probabilities
             probs = F.softmax(logits, dim=-1)
             # sample from the distribution
@@ -228,9 +260,9 @@ class zoof_v1_2(nn.Module, PyTorchModelHubMixin):
             if eos_tok is not None and idx_next == eos_tok:
                 break
 
-        return idx
+            return idx
 
     @torch.no_grad()
     def calculate_inference_loss(self, idx, targets):
-        _, loss = self(idx, targets)
+        _, loss, _ = self(idx, targets)
         return loss
