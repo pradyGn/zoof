@@ -57,7 +57,7 @@ def generate_response_and_decode(model, tokenizer, ids):
         None: If generation fails after the maximum number of retries.
     """
     max_retries = 3
-
+    model.eval()
     for attempt in range(max_retries):
         try:
             model_out_ids = model.generate(ids, 1024, repetition_penalty=1.15, temperature=0.6, eos_tok=47792, use_kv_cache=True)[0].tolist()[ids.size(1) : -1]
