@@ -26,12 +26,12 @@ tokenizer = PreTrainedTokenizerFast.from_pretrained("Jiraya/zoof-tokenizer")
 chat_history_ids = []
 print("\n\nHi there! You're chatting with Zoof.")
 while True:
-    user_input = input("What can I help you with next? (Note: You can type 'exit' anytime to stop.)\n\nUser:")
+    user_input = input("What can I help you with next? (Note: You can type 'exit' anytime to stop.)\n\nUser: ")
     if user_input.lower() == "exit":
         print("See you soon!👋")
         break
     user_input_ids = encode_input(tokenizer, chat_history_ids, user_input)
 
     model_output, model_out_ids = generate_response_and_decode(model, tokenizer, user_input_ids)
-    chat_history_ids = user_input_ids.tolist() + model_out_ids
+    chat_history_ids = user_input_ids.tolist()[0] + model_out_ids
     print(f"Zoof: {model_output}")
