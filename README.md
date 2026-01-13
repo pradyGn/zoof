@@ -20,7 +20,7 @@
 - **Rotary Positional Embeddings (RoPE):** Replaces absolute learned positional embeddings from v1 with `RoPE`, enabling better generalization to longer contexts.
 - **Flash Attention:** Automatically uses PyTorch's `F.scaled_dot_product_attention`, leveraging Flash Attention kernels when available for efficient $O(N^2)$ computing.
 - **Smart Initialization:** Implements a specific weight initialization strategy (scaling projections by $1/\sqrt{2L}$) to stabilize variance in deep residual paths.
-- **Extensive Pre-training:** Trained on approximately **67 Billion tokens** from the `FineWeb-Edu` dataset, focusing on reasoning-dense content.
+- **Extensive Pre-training:** Trained on approximately **79 Billion tokens** from the `FineWeb-Edu` dataset, focusing on reasoning-dense content.
 
 ## ☁️ Quick Start (Google Colab)
 
@@ -73,18 +73,20 @@ Despite being trained on significantly less data than industry baselines, **zoof
 
 | Benchmark | Metric | **Zoof-v1.2-394M** | SmolLM-360M | SmolLM2-360M | Qwen2.5-0.5B |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| **Training Tokens** | *Data Efficiency* | **67B** | 600B | 4T | 18T |
-| **PIQA** | Physical Commonsense | 69.4 | 71.6 | 71.7 | 69.9 |
-| **BoolQ** | Boolean Reasoning | 61.9 | - | - | - |
-| **WinoGrande** | Pronoun Resolution | 54.1 | 52.8 | 52.5 | 54.1 |
-| **HellaSwag** | Commonsense NLI | 46.0 | 51.8 | 54.5 | 51.2 |
-| **OBQA** | OpenBookQA | 35.6 | 37.2 | 37.4 | 37.4 |
-| **ARC-E** | Science (Easy) | 42.9 | - | - | - |
-| **ARC-C** | Science (Challenge) | 30.5 | - | - | 35.6 |
-| **SIQA** | Social Commonsense | 39.2 | - | - | - |
-| **MMLU** | General Knowledge (cloze) | 28.6 | 34.4 | 35.8 | 33.7 |
+| **Training Tokens** | *Data Efficiency* | **79B** | 600B | 4T | 18T |
+| **PIQA** | Physical Commonsense | 69.5 | 71.6 | 71.7 | 69.9 |
+| **BoolQ** | Boolean Reasoning | 59.9 | - | - | - |
+| **WinoGrande** | Pronoun Resolution | 53.8 | 52.8 | 52.5 | 54.1 |
+| **HellaSwag** | Commonsense NLI | 47.0 | 51.8 | 54.5 | 51.2 |
+| **OBQA** | OpenBookQA | 37.2 | 37.2 | 37.4 | 37.4 |
+| **ARC-E** | Science (Easy) | 44.3 | - | - | - |
+| **ARC-C** | Science (Challenge) | 32.3 | - | - | 35.6 |
+| **SIQA** | Social Commonsense | 40.3 | - | - | - |
+| **MMLU (cloze)** | General Knowledge | 28.5 | 34.4 | 35.8 | 33.7 |
+| **MMLU** | General Knowledge | 29.6 | - | - | - |
+| **RACE** | Reading Comprehension | 38.3 | - | - | - |
 
-> **Note:** Zoof achieves these scores with **~1.7% of the training compute** used for SmolLM2 (67B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
+> **Note:** Zoof achieves these scores with **~1.7% of the training compute** used for SmolLM2 (79B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
 
 ## Directory Structure
 
