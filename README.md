@@ -86,7 +86,7 @@ Despite being trained on significantly less data than industry baselines, **zoof
 | **MMLU** | General Knowledge | 29.6 | - | - | - |
 | **RACE** | Reading Comprehension | 38.3 | - | - | - |
 
-> **Note:** Zoof achieves these scores with **~1.7% of the training compute** used for SmolLM2 (79B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
+> **Note:** Zoof achieves these scores with **~2% of the training compute** used for SmolLM2 (79B vs 4T tokens), highlighting the efficiency of the architecture and FineWeb-Edu dataset.
 
 ## Directory Structure
 
